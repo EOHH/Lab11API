@@ -2,12 +2,12 @@
 {
     public class Invoice
     {
-        public int InvoiceId { get; set; } // Clave primaria
+        public int InvoiceId { get; set; }
         public string Number { get; set; }
         public DateTime Date { get; set; }
-
-        // Llave foránea
-        public int CustomerId { get; set; } // Relación con Customer
-        public Customer Customer { get; set; } // Navegación a Customer
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+        public decimal Total { get; set; } // Agregado para el cálculo del total
+        public virtual ICollection<Detail> Details { get; set; }
     }
 }

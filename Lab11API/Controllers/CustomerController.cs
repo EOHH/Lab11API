@@ -32,24 +32,22 @@ namespace Lab11API.Controllers
         }
 
         // Actualizar un cliente
-        [HttpPut]
-        public IActionResult Update(Customer customer)
+        [HttpPut("{id}")]
+        public IActionResult UpdateDocumentNumber(int id, [FromBody] Customer updatedCustomer)
         {
-            var existingCustomer = _context.Customers.Find(customer.CustomerId);
-            if (existingCustomer == null)
+            var customer = _context.Customers.Find(id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            existingCustomer.FirstName = customer.FirstName;
-            existingCustomer.LastName = customer.LastName;
-            existingCustomer.DocumentNumber = customer.DocumentNumber;
+            customer.DocumentNumber = updatedCustomer.DocumentNumber;
+            customer.Email = updatedCustomer.Email;
             _context.SaveChanges();
-
             return NoContent();
         }
 
-        // Eliminar un cliente (lógica personalizada si es necesario)
+        // Eliminar un cliente
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -59,8 +57,7 @@ namespace Lab11API.Controllers
                 return NotFound();
             }
 
-            // Implementa lógica personalizada para desactivar si es necesario
-
+            _context.Customers.Remove(customer);
             _context.SaveChanges();
             return NoContent();
         }

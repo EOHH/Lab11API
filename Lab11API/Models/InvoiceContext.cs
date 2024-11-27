@@ -24,6 +24,10 @@ namespace Lab11API.Models
                 .Property(d => d.Subtotal)
                 .HasColumnType("decimal(18,2)"); // Especifica el tipo de columna con precisión
 
+            modelBuilder.Entity<Invoice>()
+                .Property(i => i.Total)
+                .HasColumnType("decimal(18,2)");
+
             base.OnModelCreating(modelBuilder);
         }
     }

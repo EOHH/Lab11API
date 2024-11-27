@@ -7,6 +7,8 @@
         public string LastName { get; set; }
         public string DocumentNumber { get; set; }
 
+        public string Email { get; set; }
+
         public virtual ICollection<Invoice> Invoices { get; set; } // Relación uno a muchos con Invoices
     }
 

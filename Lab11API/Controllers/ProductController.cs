@@ -27,25 +27,23 @@ namespace Lab11API.Controllers
         [HttpPost]
         public void Insert(Product product)
         {
-            product.IsActive = true; // Asegúrate de que el nuevo producto esté activo
+            product.IsActive = true;
             _context.Products.Add(product);
             _context.SaveChanges();
         }
 
-        // Actualizar un producto
-        [HttpPut]
-        public IActionResult Update(Product product)
+        // Actualizar precio de un producto
+        [HttpPut("{id}")]
+        public IActionResult UpdatePrice(int id, [FromBody] double newPrice)
         {
-            var existingProduct = _context.Products.Find(product.ProductId);
-            if (existingProduct == null || !existingProduct.IsActive)
+            var product = _context.Products.Find(id);
+            if (product == null || !product.IsActive)
             {
                 return NotFound();
             }
 
-            existingProduct.Name = product.Name;
-            existingProduct.Price = product.Price;
+            product.Price = newPrice;
             _context.SaveChanges();
-
             return NoContent();
         }
 
@@ -59,9 +57,23 @@ namespace Lab11API.Controllers
                 return NotFound();
             }
 
-            product.IsActive = false; // Desactivar el producto
+            product.IsActive = false;
             _context.SaveChanges();
+            return NoContent();
+        }
 
+        // Eliminar lista de productos
+        [HttpDelete]
+        public IActionResult DeleteList([FromBody] List<int> productIds)
+        {
+            var products = _context.Products.Where(p => productIds.Contains(p.ProductId) && p.IsActive).ToList();
+            if (!products.Any())
+            {
+                return NotFound();
+            }
+
+            products.ForEach(p => p.IsActive = false);
+            _context.SaveChanges();
             return NoContent();
         }
     }
